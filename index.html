@@ -1,2 +1,132 @@
 
-<!-- Full HTML content from the canvas goes here (truncated for brevity in this block) -->
+<!-- 🌐 Anti-Trafficking Hub Platform (Academic + Tactical Grade) -->
+
+<section style="padding:2rem; background:#f5f5f5;">
+  <h1 style="text-align:center; color:#1a237e; font-size:2rem;">🌍 The Global Anti-Trafficking Intelligence & Career Network</h1>
+  <p style="max-width:900px; margin:1rem auto; text-align:center; font-size:1rem; color:#333;">
+    This site serves as an international, multilingual, tactical-grade educational platform to inform, train, and empower civilians, professionals, and organizations in preventing and combating human trafficking.
+  </p>
+
+  <!-- 🌐 Language + Search -->
+  <div style="text-align:center; margin:2rem auto;">
+    <input type="text" id="searchInput" onkeyup="filterResources()" placeholder="Search careers, laws, organizations, regions..." style="width:80%; padding:1rem; font-size:1rem; border:1px solid #ccc; border-radius:8px;">
+    <br><br>
+    <label for="languageSelector">🌐 Translate:</label>
+    <select id="languageSelector" onchange="changeLanguage(this.value)" style="padding:0.5rem; border-radius:5px;">
+      <option value="en">English</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="ar">العربية</option>
+      <option value="zh">中文</option>
+    </select>
+  </div>
+
+  <!-- 📘 Career Paths -->
+  <div style="background:#fff; padding:2rem; border-radius:10px; max-width:1000px; margin:auto; box-shadow:0 0 10px rgba(0,0,0,0.05);">
+    <h2 style="text-align:center; color:#1b5e20;">📘 Career Paths in Anti-Human Trafficking</h2>
+    <ul id="resourceContent" style="list-style:none; padding-left:0;">
+      <li>Law Enforcement Officer (Federal, State, Local)</li>
+      <li>Cybercrime Analyst / OSINT Investigator</li>
+      <li>Intelligence Analyst (NGO or Agency)</li>
+      <li>Social Worker (Specialized in Exploitation Recovery)</li>
+      <li>Human Rights Lawyer / Legal Advocate</li>
+      <li>Data Analyst for Anti-Trafficking Research</li>
+      <li>Victim Case Manager</li>
+      <li>Cryptocurrency Financial Crime Analyst</li>
+      <li>NGO Program Director / Outreach Coordinator</li>
+      <li>Child Protection Specialist</li>
+      <li>Supply Chain Compliance Auditor</li>
+      <li>Trauma-Informed Therapist</li>
+      <li>Forensic Interviewer (Minors & Survivors)</li>
+      <li>Ethical Hacker / Penetration Tester (Child Exploitation Ops)</li>
+      <li>Policy Analyst (Anti-Trafficking Legislation)</li>
+    </ul>
+  </div>
+
+  <!-- 🔗 Resource and Organization Bibliography -->
+  <div style="margin-top:3rem; text-align:center;">
+    <a href="https://humantraffickinghotline.org" target="_blank">📞 National Human Trafficking Hotline</a><br>
+    <a href="https://www.ijm.org/" target="_blank">🌐 International Justice Mission (IJM)</a><br>
+    <a href="https://www.unodc.org/unodc/en/human-trafficking/" target="_blank">🕊️ UNODC Global Reports</a><br>
+    <a href="https://traffickinginstitute.org/" target="_blank">📊 Human Trafficking Institute Data</a><br>
+    <a href="https://castla.org" target="_blank">💼 CAST (Coalition to Abolish Slavery and Trafficking)</a><br>
+    <a href="https://ovc.ojp.gov" target="_blank">📚 Office for Victims of Crime</a>
+  </div>
+
+  <!-- 🔐 Admin Login & Analytics -->
+  <div id="loginSection" style="text-align:center; margin-top:4rem;">
+    <h3>🔒 Admin Login</h3>
+    <input id="adminPass" type="password" placeholder="Enter admin password" style="padding:0.5rem; width:300px; font-size:1rem; border:1px solid #ccc; border-radius:5px;">
+    <button onclick="authenticateAdmin()" style="margin-left:0.5rem; padding:0.5rem 1rem; background:#1a237e; color:white; border:none; border-radius:5px;">Access Dashboard</button>
+    <p id="adminStatus" style="margin-top:1rem; color:#d32f2f;"></p>
+  </div>
+
+  <div id="analyticsDashboard" style="display:none; margin:4rem auto; max-width:900px; padding:2rem; border:1px solid #e0e0e0; background:#fff; border-radius:10px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+    <h3 style="text-align:center; color:#1a237e;">📊 Live User Interaction Analytics</h3>
+    <p id="analyticsSummary">No interactions recorded yet.</p>
+    <button onclick="downloadCSV()" style="margin-top:1rem; padding:0.5rem 1rem; font-size:1rem; border:none; background:#1a237e; color:#fff; border-radius:5px;">Download CSV</button>
+  </div>
+</section>
+
+<script>
+let interactionLog = [];
+const ADMIN_PASS = 'traffickSecure2025';
+
+function filterResources() {
+  const input = document.getElementById('searchInput');
+  const filter = input.value.toLowerCase();
+  const content = document.getElementById('resourceContent');
+  const listItems = content.getElementsByTagName('li');
+  let matchCount = 0;
+  for (let i = 0; i < listItems.length; i++) {
+    const item = listItems[i];
+    if (item.textContent.toLowerCase().includes(filter)) {
+      item.style.display = '';
+      matchCount++;
+    } else {
+      item.style.display = 'none';
+    }
+  }
+  if (filter.length > 2) {
+    analyticsLog('search', { term: filter, matches: matchCount });
+  }
+}
+
+function analyticsLog(eventType, detail = {}) {
+  const timestamp = new Date().toLocaleTimeString();
+  interactionLog.push({ eventType, detail, timestamp });
+  updateAnalyticsSummary();
+}
+
+function updateAnalyticsSummary() {
+  const output = interactionLog.map(log => `🕒 ${log.timestamp} | ${log.eventType.toUpperCase()} — ${JSON.stringify(log.detail)}`).join('<br>');
+  document.getElementById('analyticsSummary').innerHTML = output || 'No interactions recorded yet.';
+}
+
+function downloadCSV() {
+  const csvContent = 'data:text/csv;charset=utf-8,' + interactionLog.map(e => `${e.timestamp},${e.eventType},${JSON.stringify(e.detail).replace(/,/g, ';')}`).join('
+');
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', 'analytics_data.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function authenticateAdmin() {
+  const inputPass = document.getElementById('adminPass').value;
+  if (inputPass === ADMIN_PASS) {
+    document.getElementById('analyticsDashboard').style.display = 'block';
+    document.getElementById('adminStatus').innerText = '';
+  } else {
+    document.getElementById('adminStatus').innerText = 'Access Denied: Incorrect Password';
+    document.getElementById('analyticsDashboard').style.display = 'none';
+  }
+}
+
+function changeLanguage(lang) {
+  alert('Language change requested: ' + lang + ' (i18n system ready but requires content integration)');
+}
+</script>
